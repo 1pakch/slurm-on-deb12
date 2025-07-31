@@ -41,3 +41,30 @@
         owner: slurm
         group: slurm
       become: yes
+
+    - name: Disable problematic PMIX v4 plugin
+      # slurmctld: error: mpi/pmix_v4: init: (null) [0]: mpi_pmix.c:195: pmi/pmix: can not load PMIx library
+      ansible.builtin.file:
+        path: /usr/lib/x86_64-linux-gnu/slurm-wlm/mpi_pmix_v4.so
+        state: absent
+      become: yes
+
+    - name: Create slurmd state directories (compute nodes)
+      ansible.builtin.file:
+        path: /var/spool/slurmd
+        state: directory
+        owner: slurm
+        group: slurm
+        mode: '0755'
+      become: yes
+      when: ansible_hostname is match("^node[0-9]+$")
+
+    - name: Create slurmctld directories (head node)
+      ansible.builtin.file:
+        path: /var/spool/slurmctld
+        state: directory
+        owner: slurm
+        group: slurm
+        mode: '0755'
+      become: yes
+      when: ansible_hostname == "head"
