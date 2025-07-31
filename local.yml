@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+    - name: Deploy static /etc/hosts from repository
+      ansible.builtin.copy:
+        src: files/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
