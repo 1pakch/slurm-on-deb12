@@ -1,5 +1,9 @@
 - hosts: localhost
   tasks:
+    - name: Display inventory hostname
+      ansible.builtin.debug:
+        msg: "inventory_hostname is {{ inventory_hostname }}"
+
     - name: Deploy static /etc/hosts from repository
       ansible.builtin.copy:
         src: files/hosts
