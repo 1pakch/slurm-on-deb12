@@ -17,11 +17,11 @@
 
     - name: Install SLURM worker packages on worker nodes
       ansible.builtin.command: sudo apt install -y slurmd munge
-      when: inventory_hostname is match("^node[0-9]+$")
+      when: ansible_hostname is match("^node[0-9]+$")
 
     - name: Install SLURM control daemon and the client on the head node
       ansible.builtin.command: sudo apt install -y slurmctld slurm-client munge
-      when: inventory_hostname == "head"
+      when: ansible_hostname == "head"
     
     - name: Deploy static SLURM config from the repo
       ansible.builtin.copy:
