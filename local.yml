@@ -8,3 +8,19 @@
         group: root
         mode: 0644
       become: yes
+
+    - name: Install SLURM worker packages on worker nodes
+      ansible.builtin.command: sudo apt install -y slurmd munge
+      when: inventory_hostname is match("^node[0-9]+$")
+
+    - name: Install SLURM control daemon and the client on the head node
+      ansible.builtin.command: sudo apt install -y slurmctld slurm-client munge
+      when: inventory_hostname == "head"
+    
+    - name: Deploy static SLURM config from the repo
+      ansible.builtin.copy:
+        src: files/slurm.conf
+        dest: /etc/slurm/slurm.conf
+        owner: slurm
+        group: slurm
+      become: yes
