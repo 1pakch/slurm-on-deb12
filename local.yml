@@ -69,7 +69,7 @@
       become: yes
       when: ansible_hostname == "head"
 
-    - name: Ensure slurmd service ruinning (compute nodes)
+    - name: Ensure slurmd service running (compute nodes)
       ansible.builtin.systemd:
         name: slurmd.service
         state: started
@@ -79,7 +79,7 @@
 
     - name: Ensure slurmctld service running (head node)
       ansible.builtin.systemd:
-        name: slurctld.service
+        name: slurmctld.service
         state: started
         enabled: yes
         daemon_reload: yes
