@@ -68,3 +68,17 @@
         mode: '0755'
       become: yes
       when: ansible_hostname == "head"
+
+    - name: Ensure slurmd service ruinning (compute nodes)
+      ansible.builtin.systemd:
+        name: slurmd.service
+        state: started
+        enabled: yes
+      when: ansible_hostname is match("^node[0-9]+$")
+
+    - name: Ensure slurmctld service running (head node)
+      ansible.builtin.systemd:
+        name: slurctld.service
+        state: started
+        enabled: yes
+      when: ansible_hostname == "head"
